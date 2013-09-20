@@ -127,6 +127,8 @@ function prompt_paradox_setup {
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{red}♺%f'
   zstyle ':prezto:module:editor:info:keymap:alternate' format '%B%F{red}❮%f%b'
 
+  zstyle ':prezto:module:git:info:ahead' format '⬆'
+  zstyle ':prezto:module:git:info:behind' format '⬇'
   zstyle ':prezto:module:git:info:action' format '! %s'
   zstyle ':prezto:module:git:info:branch' format '%b'
   zstyle ':prezto:module:git:info:commit' format '%.7c'
@@ -137,7 +139,7 @@ function prompt_paradox_setup {
   zstyle ':prezto:module:git:info:stashed' format 's'
   zstyle ':prezto:module:git:info:keys' format \
     'prompt' '$(coalesce "%b" "%p" "%c")%s' \
-    'status' '%S%D' \
+    'status' '%S%D%A%B ' \
     'dirty' '%D'
 
   # Define prompts.
