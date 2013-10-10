@@ -76,8 +76,10 @@ vcs_segment() {
 }
 
 r_vcs_segment() {
-  if $git_status && [[ "${(e)git_info[status]}" != '' ]]; then
-    rprompt_segment yellow white '${(e)git_info[status]}'
+  if $git_status && [[ "${(e)git_info[status]// /}" != '' ]]; then
+    bg_color='cyan'
+    [[ "${(e%)git_info[unsync]}" != '' ]] && bg_color='yellow'
+    rprompt_segment $bg_color white '${(e)git_info[status]}'
   fi
 }
 
@@ -100,8 +102,27 @@ function build_rprompt() {
   rprompt_end
 }
 
+start_time=$SECONDS
 function prompt_paradox_preexec {
+  start_time=$SECONDS
 }
+
+function calc_elapsed_time {
+  if [[ $timer_result -ge 3600 ]]; then
+    let "timer_hours = $timer_result / 3600"
+    let "remainder = $timer_result % 3600"
+    let "timer_minutes = $remainder / 60"
+    let "timer_seconds = $remainder % 60"
+    print -P "%B%F{red}>>> elapsed time ${timer_hours}h${timer_minutes}m${timer_seconds}s%b"
+  elif [[ $timer_result -ge 60 ]]; then
+    let "timer_minutes = $timer_result / 60"
+    let "timer_seconds = $timer_result % 60"
+    print -P "%B%F{yellow}>>> elapsed time ${timer_minutes}m${timer_seconds}s%b"
+  elif [[ $timer_result -gt 2 ]]; then
+    print -P "%B%F{green}>>> elapsed time ${timer_result}s%b"
+  fi
+}
+
 
 function prompt_paradox_precmd {
   setopt LOCAL_OPTIONS
@@ -110,6 +131,12 @@ function prompt_paradox_precmd {
   if (( $+functions[git-info] )); then
     git_status=git-info
   fi
+
+  timer_result=$(($SECONDS-$start_time))
+  if [[ $timer_result -gt 2 ]]; then
+    calc_elapsed_time
+  fi
+  start_time=$SECONDS
 }
 
 function prompt_paradox_setup {
@@ -140,6 +167,7 @@ function prompt_paradox_setup {
   zstyle ':prezto:module:git:info:keys' format \
     'prompt' '$(coalesce "%b" "%p" "%c")%s' \
     'status' '%S%D%A%B ' \
+    'unsync' '%D%A%B' \
     'dirty' '%D'
 
   # Define prompts.
