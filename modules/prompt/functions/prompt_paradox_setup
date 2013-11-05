@@ -83,8 +83,8 @@ r_vcs_segment() {
   fi
 }
 
-r_rvm_segment() {
-  rprompt_segment black red `rvm-prompt v g`
+r_ruby_segment() {
+  rprompt_segment black red `ruby -v | cut -d' ' -f2 | tr p /`
 }
 
 
@@ -97,7 +97,7 @@ function build_prompt {
 }
 
 function build_rprompt() {
-  r_rvm_segment
+  r_ruby_segment
   r_vcs_segment
   rprompt_end
 }
