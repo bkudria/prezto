@@ -89,6 +89,9 @@ else
   fi
 fi
 
+alias ls="$aliases[ls] -l" # Detailed listing
+alias ls="$aliases[ls] -h" # Human-readable sizes
+
 alias l='ls -1A'         # Lists in one column, hidden files.
 alias ll='ls -lh'        # Lists human readable sizes.
 alias lr='ll -R'         # Lists human readable sizes, recursively.
