@@ -39,8 +39,9 @@ zstyle ':prezto:load' pmodule \
   'osx' \
   'history-substring-search' \
   'syntax-highlighting' \
-  'prompt'
-
+  'prompt' \
+  'fasd'
+#
 #
 # Ruby
 #
